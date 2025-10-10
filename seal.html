@@ -104,6 +104,22 @@
       numerical “resonance” value.  Your location data stays on your device—it isn’t transmitted
       anywhere.
     </p>
+    <label for="resonanceInput" style="margin-top:1rem;"><strong>4. Personal Resonance (optional):</strong></label>
+    <input type="text" id="resonanceInput" placeholder="Enter a number or word representing your resonance">
+    <button id="resonanceBtn">Compute Resonant Seal</button>
+    <div id="resonanceOutput" class="output" style="display:none;"></div>
+  </section>
+  <section class="section">
+    <h3>How it Works</h3>
+    <p>
+      Under the hood, this tool uses the browser’s <code>crypto.subtle</code> API to compute a <em>SHA‑384 hash</em> of your input. SHA‑384 is part of the SHA‑2 family and produces a 384‑bit digest that acts as a fingerprint of the data: any change to the input yields a completely different output【185264566575343†L92-L103】. To compute the hash consistently, we convert your text into a UTF‑8 byte array before hashing【185264566575343†L114-L124】. This process ensures that the same characters always yield the same seal regardless of platform.
+    </p>
+    <p>
+      Hashing alone provides <strong>integrity</strong> but not <strong>authenticity</strong>: anyone can compute the hash of any message【185264566575343†L92-L104】. To prove authorship, protocols like HMAC (Hash‑based Message Authentication Code) incorporate a secret key, meaning only someone with the key can produce or verify the MAC. Our demonstration omits keys for simplicity; it’s designed for creative exploration.
+    </p>
+    <p>
+      Features like haptic vibration, geolocation‑based resonance, and personal resonance input are playful additions. Vibration engages your sense of touch, the geolocation resonance converts your coordinates to a numeric value, and the personal resonance field lets you append an arbitrary word or number to your message before hashing. These inputs never leave your device.
+    </p>
   </section>
   <footer class="footer">
     <p>&copy; 2025 Matthew LaBarre / Planetary Tones. All rights reserved.</p>
@@ -185,6 +201,24 @@
         output.textContent = 'Unable to retrieve location: ' + err.message;
         output.style.display = 'block';
       });
+    });
+
+    // Compute a seal that incorporates personal resonance
+    document.getElementById('resonanceBtn').addEventListener('click', async () => {
+      const message = document.getElementById('inputText').value;
+      const resonanceVal = document.getElementById('resonanceInput').value.trim();
+      const outDiv = document.getElementById('resonanceOutput');
+      if (!message.trim() || !resonanceVal) {
+        outDiv.textContent = 'Enter both your message and resonance value.';
+        outDiv.style.display = 'block';
+        outDiv.style.color = '';
+        return;
+      }
+      const combined = message + resonanceVal;
+      const hash = await generateHash(combined);
+      outDiv.textContent = `Resonant SHA‑384: ${hash}`;
+      outDiv.style.display = 'block';
+      outDiv.style.color = '';
     });
   </script>
 </body>
