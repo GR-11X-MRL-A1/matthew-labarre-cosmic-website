@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seal Calculator &amp; Verifier</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Additional styling for seal page */
+    .calculator {
+      background-color: #1f2041;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .calculator textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 0.75rem;
+      border-radius: 4px;
+      border: none;
+      background-color: #2d2e57;
+      color: #e0e0e0;
+      resize: vertical;
+    }
+    .calculator input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border-radius: 4px;
+      border: none;
+      background-color: #2d2e57;
+      color: #e0e0e0;
+    }
+    .calculator button {
+      margin-top: 0.75rem;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #8e44ad;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .calculator button:hover {
+      background-color: #9b59b6;
+    }
+    .calculator .output {
+      background-color: #2d2e57;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+      word-wrap: break-word;
+      color: #c8c8e0;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation bar reused from main site -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#music">Music</a></li>
+      <li><a href="publishing.html">Publishing</a></li>
+      <li><a href="art.html">Art</a></li>
+      <li><a href="victor-vector.html">Victor Vector</a></li>
+      <li><a href="seal.html">Seal Calc</a></li>
+    </ul>
+  </nav>
+  <section class="section">
+    <h2>Seal Calculator &amp; Verifier</h2>
+    <p>
+      Use this tool to generate a cryptographic <em>seal</em> (SHA‑384 hash) of any text
+      you provide.  A cryptographic hash produces a fixed 384‑bit output from
+      arbitrary input and is commonly used to check data integrity【185264566575343†L92-L103】.  By comparing
+      your generated seal against a published value, you can confirm that a
+      document hasn’t been altered【185264566575343†L114-L124】.  Note that hashing alone ensures integrity
+      but not authenticity【185264566575343†L92-L104】—for message authentication, use keyed MACs such as HMAC.
+    </p>
+    <div class="calculator">
+      <label for="inputText"><strong>1. Enter text to seal:</strong></label>
+      <textarea id="inputText" placeholder="Type your haiku, message or testimony here..."></textarea>
+      <button id="generateBtn">Generate Seal</button>
+      <div id="hashOutput" class="output" style="display:none;"></div>
+      <label for="verifyInput" style="margin-top:1rem;"><strong>2. Verify a seal (optional):</strong></label>
+      <input type="text" id="verifyInput" placeholder="Enter expected SHA‑384 hash to verify">
+      <button id="verifyBtn">Verify Seal</button>
+      <div id="verifyResult" class="output" style="display:none;"></div>
+      <hr style="margin:1.5rem 0; border-color:#3c3d6e;">
+      <label><strong>3. Haptics &amp; Resonance:</strong></label><br>
+      <button id="vibrateBtn">Vibrate</button>
+      <button id="geoBtn">Get Resonance</button>
+      <div id="geoOutput" class="output" style="display:none;"></div>
+    </div>
+    <p style="font-size:0.85rem; margin-top:1.5rem;">
+      This demonstration uses your browser’s built‑in <code>crypto.subtle.digest</code> method to compute the
+      SHA‑384 hash of your input.  On supported devices, the “Vibrate” button triggers a short
+      haptic pulse via <code>navigator.vibrate()</code>, and “Get Resonance” retrieves your approximate
+      geolocation (with your permission) and converts the latitude/longitude into a playful
+      numerical “resonance” value.  Your location data stays on your device—it isn’t transmitted
+      anywhere.
+    </p>
+  </section>
+  <footer class="footer">
+    <p>&copy; 2025 Matthew LaBarre / Planetary Tones. All rights reserved.</p>
+  </footer>
+  <script>
+    // Utility to convert ArrayBuffer to hex string
+    function bufferToHex(buffer) {
+      const byteArray = new Uint8Array(buffer);
+      const hexCodes = [...byteArray].map(b => b.toString(16).padStart(2, '0'));
+      return hexCodes.join('');
+    }
+
+    // Generate SHA‑384 hash
+    async function generateHash(text) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-384', data);
+      return bufferToHex(hashBuffer);
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+      const input = document.getElementById('inputText').value;
+      const outputDiv = document.getElementById('hashOutput');
+      if (!input.trim()) {
+        outputDiv.textContent = 'Please enter some text to generate a seal.';
+        outputDiv.style.display = 'block';
+        return;
+      }
+      const hash = await generateHash(input);
+      outputDiv.textContent = `SHA‑384: ${hash}`;
+      outputDiv.style.display = 'block';
+    });
+
+    document.getElementById('verifyBtn').addEventListener('click', async () => {
+      const input = document.getElementById('inputText').value;
+      const expected = document.getElementById('verifyInput').value.trim().toLowerCase();
+      const resultDiv = document.getElementById('verifyResult');
+      if (!input.trim() || !expected) {
+        resultDiv.textContent = 'Enter both your message and the expected hash.';
+        resultDiv.style.display = 'block';
+        return;
+      }
+      const hash = (await generateHash(input)).toLowerCase();
+      if (hash === expected) {
+        resultDiv.textContent = '✔️ Seal verified: the hash matches.';
+        resultDiv.style.color = '#7ec77e';
+      } else {
+        resultDiv.textContent = '❌ Verification failed: the hash does not match.';
+        resultDiv.style.color = '#e07474';
+      }
+      resultDiv.style.display = 'block';
+    });
+
+    // Vibrate device if supported
+    document.getElementById('vibrateBtn').addEventListener('click', () => {
+      if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]);
+      } else {
+        alert('Vibration API not supported on this device.');
+      }
+    });
+
+    // Get geolocation and compute “resonance” value
+    document.getElementById('geoBtn').addEventListener('click', () => {
+      const output = document.getElementById('geoOutput');
+      if (!navigator.geolocation) {
+        output.textContent = 'Geolocation API not supported.';
+        output.style.display = 'block';
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+        // Simple resonance calculation: absolute sum of lat/long scaled
+        const resonance = Math.abs(latitude + longitude).toFixed(6);
+        output.innerHTML = `Latitude: ${latitude.toFixed(6)}<br>Longitude: ${longitude.toFixed(6)}<br>` +
+          `Resonance: ${resonance}`;
+        output.style.display = 'block';
+      }, err => {
+        output.textContent = 'Unable to retrieve location: ' + err.message;
+        output.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>
