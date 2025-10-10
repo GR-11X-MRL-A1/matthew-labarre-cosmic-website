@@ -1,0 +1,239 @@
+/*
+  Cosmic website styling for Matthew LaBarre / Planetary Tones.
+  The palette uses deep blues and purples reminiscent of a night sky,
+  accented with violet highlights to emphasise headings and links.
+*/
+
+/* Global styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: #0d0e23;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+/* Hero section */
+.hero {
+  background-image: url('cosmic-art.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+}
+
+/* Dark overlay for readability */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 0 1rem;
+}
+
+.aliases {
+  font-style: italic;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.tagline {
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.button {
+  background-color: #8e44ad;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #9b59b6;
+}
+
+/* Navigation bar */
+.navbar {
+  background-color: #1a1b3a;
+  padding: 0.5rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.navbar li {
+  margin: 0 1rem;
+}
+
+.navbar a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.navbar a:hover {
+  color: #d1a3ff;
+}
+
+/* Section container */
+.section {
+  padding: 4rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #d1a3ff;
+  text-align: center;
+}
+
+/* Music cards */
+.music-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.music-card {
+  background-color: #1f2041;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 300px;
+  flex: 1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.music-card h3 {
+  margin-top: 0;
+  color: #a780e2;
+}
+
+.music-card .release-date {
+  font-size: 0.9rem;
+  color: #9e9fc6;
+  margin-bottom: 0.5rem;
+}
+
+.music-card a {
+  color: #c29df3;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.music-card a:hover {
+  color: #e0c9ff;
+}
+
+/* Gallery styling */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-grid img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.social-icons img {
+  width: 32px;
+  filter: invert(80%) sepia(50%) saturate(300%) hue-rotate(260deg);
+  transition: transform 0.2s ease;
+}
+
+.social-icons img:hover {
+  transform: scale(1.1);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #1a1b3a;
+  color: #9e9fc6;
+  font-size: 0.8rem;
+}
+
+/* Publishing page styles */
+.publishing-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.publishing-card {
+  background-color: #1f2041;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 320px;
+  flex: 1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.publishing-card h3 {
+  margin-top: 0;
+  color: #a780e2;
+}
+
+.publishing-card p {
+  font-size: 0.9rem;
+  color: #c8c8e0;
+}
+
+.publishing-card a {
+  color: #c29df3;
+  text-decoration: underline;
+}
+
+.publishing-card a:hover {
+  color: #e0c9ff;
+}
