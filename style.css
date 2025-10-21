@@ -237,3 +237,28 @@ h1, h2, h3 {
 .publishing-card a:hover {
   color: #e0c9ff;
 }
+.evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.evidence-item {
+  border: 1px solid #333;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.3);
+}
+
+.evidence-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.evidence-item h3 {
+  color: #4a9eff;
+  margin-bottom: 0.5rem;
+}
